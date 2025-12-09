@@ -52,30 +52,24 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-    try {
-      e.preventDefault();
-      const formData = new FormData(e.currentTarget);
-      const email = formData.get('email') as string;
-      const password = formData.get('password') as string;
-      setIsLoading(true);
-      console.log(import.meta.env.VITE_SUPABASE_URL)
-      const {data,error} = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-      });
-      setIsLoading(false);
-      if(data && !error){
-        toast.success('Successfully logged in!');
-        onLogin();
-        navigate('/');
-      }
-      else
-      {
-          toast.error(error?.message ||"An Unknown error occured!");
-          console.log(error);
-      }
-    } catch (error) {
-      console.log(error);
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    setIsLoading(true);
+    const {data,error} = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+    setIsLoading(false);
+    if(data && !error){
+      toast.success('Successfully logged in!');
+      onLogin(); 
+      navigate('/');
+    }
+    else
+    {
+        toast.error(error?.message ||"An Unknown error occured!");
     }
   };
 
